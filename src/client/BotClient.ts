@@ -38,10 +38,17 @@ export class BotClient extends Client {
         this.loadCommands();
     }
 
+    /**
+     * Logs client into Discord gateway
+     * @returns Returns resolved or rejected login promise.
+     */
     public async start(): Promise<string> {
         return await this.login(this.token!);
     }
 
+    /**
+     * Loads events from the specified events dir
+     */
     public async loadEvents(): Promise<any> {
         const a = Glob.sync(`${this.eventsDir}/**/*.js`);
         for (const b of a) {
@@ -57,6 +64,10 @@ export class BotClient extends Client {
                 });
         }
     }
+
+    /**
+     * Loads commands from the specified commands dir
+     */
     public async loadCommands(): Promise<any> {
         const a = Glob.sync(`${this.commandsDir}/**/*.js`);
         for (const b of a) {
