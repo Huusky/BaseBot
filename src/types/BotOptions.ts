@@ -3,4 +3,5 @@ export interface BotOptions {
     owner?: string | string[];
     commandsDir: string;
     eventsDir: string;
+    storageCString?: string;
 }

@@ -1,4 +1,4 @@
-import * as Discord from 'discord.js';
+import { PermissionResolvable, RoleResolvable} from 'discord.js';
 
 export interface CommandInfo {
     cmdName: string;
@@ -8,8 +8,8 @@ export interface CommandInfo {
     cmdAliases?: string[];
     cmdHidden?: boolean;
     cmdEnabled: boolean;
-    cmdClientPermissions?: Discord.PermissionResolvable[];
-    cmdUserPermissions?: Discord.PermissionResolvable[];
-    cmdRoles?: Discord.RoleResolvable[];
+    cmdClientPermissions?: PermissionResolvable[];
+    cmdUserPermissions?: PermissionResolvable[];
+    cmdRoles?: RoleResolvable[];
     cmdOwnerOnly?: boolean;
 }

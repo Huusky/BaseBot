@@ -1,11 +1,10 @@
-import { BotOptions } from '../structures/BotOptions';
+import { BotOptions } from '../types/BotOptions';
 import { Client, ClientOptions, User } from 'discord.js';
 import { CommandCollection } from '../command/CommandCollection';
 import { EventCollection } from '../event/EventCollection';
-import * as Glob from 'glob';
-import * as Path from 'path';
-import { Command } from '../command/Command';
-import { Event } from '../event/Event';
+import { CommandLoader } from '../command/CommandLoader';
+import { EventLoader } from '../event/EventLoader';
+import { Storage } from '../storage/Storage';
 /**
  * The BaseBot Client
  * @param {BotOptions} options Object containing required client properties
@@ -17,25 +16,33 @@ export class BotClient extends Client {
 
     private eventsDir!: string;
     private commandsDir!: string;
+    private storageCString?: string;
+
+    private commandLoader: CommandLoader;
+    private eventLoader: EventLoader;
+
+    public storage: Storage;
 
     public constructor(options: BotOptions, clientOptions?: ClientOptions) {
         super(clientOptions);
 
         if (options) Object.assign(this, options);
 
-        this.eventsDir = Path.resolve(this.eventsDir);
-        this.commandsDir = Path.resolve(this.commandsDir);
-
         this.Events = new EventCollection<this>(this);
         this.Commands = new CommandCollection<this>(this);
+
+        this.commandLoader = new CommandLoader(this);
+        this.eventLoader = new EventLoader(this);
+
+        this.storage = new Storage(this.storageCString);
     }
 
     /**
-     * Initialize commands and events
+     * Loads commands and events
      */
     public async init(): Promise<any> {
-        this.loadEvents();
-        this.loadCommands();
+        await this.eventLoader.loadEvents(this.eventsDir);
+        await this.commandLoader.loadCommands(this.commandsDir);
     }
 
     /**
@@ -44,42 +51,5 @@ export class BotClient extends Client {
      */
     public async start(): Promise<string> {
         return await this.login(this.token!);
-    }
-
-    /**
-     * Loads events from the specified events dir
-     */
-    public async loadEvents(): Promise<any> {
-        const a = Glob.sync(`${this.eventsDir}/**/*.js`);
-        for (const b of a) {
-            const c = await import(b.split('.js')[0])
-                .then( (event) => {
-                    let d: Event = new event.default();
-                    this.Events.set(d.name, d);
-                    this.on(d.name, d.execute.bind(null, this));
-                    console.log(`[LOAD EVENTS] [LOADED] : ${d.name}, ${d}`);
-                })
-                .catch( (err) => {
-                    console.log(`[LOAD EVENTS] [ERROR]`, err);
-                });
-        }
-    }
-
-    /**
-     * Loads commands from the specified commands dir
-     */
-    public async loadCommands(): Promise<any> {
-        const a = Glob.sync(`${this.commandsDir}/**/*.js`);
-        for (const b of a) {
-            const c = await import(b.split('.js')[0])
-                .then( (command) => {
-                    let d: Command = new command.default();
-                    this.Commands.set(d.cmdName, d);
-                    console.log(`[LOAD COMMAND] [LOADED] : ${d.cmdName}, ${d}`);
-                })
-                .catch( () => {
-                    console.log(`[LOAD COMMANDS] [ERROR]`);
-                });
-        }
     }
 }

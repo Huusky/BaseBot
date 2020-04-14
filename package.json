@@ -5,11 +5,18 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "dependencies": {
+    "@keyv/mongo": "^1.1.0",
+    "@keyv/mysql": "^1.1.4",
+    "@keyv/postgres": "^1.0.16",
+    "@keyv/redis": "^2.1.1",
+    "@keyv/sqlite": "^2.0.2",
     "@types/glob": "^7.1.1",
+    "@types/keyv": "^3.1.1",
     "@types/node": "^13.11.0",
     "@types/ws": "^7.2.3",
     "discord.js": "^12.1.1",
-    "glob": "^7.1.6"
+    "glob": "^7.1.6",
+    "keyv": "^4.0.0"
   },
   "devDependencies": {
     "typescript": "^3.8.3"

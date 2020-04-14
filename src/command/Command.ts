@@ -1,4 +1,4 @@
-import { CommandInfo } from "../structures/CommandInfo";
+import { CommandInfo } from "../types/CommandInfo";
 import * as Discord from 'discord.js';
 import { BotClient } from "../client/BotClient";
 
