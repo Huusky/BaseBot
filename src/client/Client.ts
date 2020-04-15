@@ -1,5 +1,5 @@
 import { BotOptions } from '../types/BotOptions';
-import { Client, ClientOptions, User } from 'discord.js';
+import * as Discord from 'discord.js';
 import { CommandCollection } from '../command/CommandCollection';
 import { EventCollection } from '../event/EventCollection';
 import { CommandLoader } from '../command/CommandLoader';
@@ -10,7 +10,7 @@ import { Storage } from '../storage/Storage';
  * @param {BotOptions} options Object containing required client properties
  * @param {ClientOptions} clientOptions Discord.js ClientOptions
  */
-export class BotClient extends Client {
+export class Client extends Discord.Client {
     Events: EventCollection<this>;
     Commands: CommandCollection<this>;
 
@@ -23,10 +23,13 @@ export class BotClient extends Client {
 
     public storage: Storage;
 
-    public constructor(options: BotOptions, clientOptions?: ClientOptions) {
+    public constructor(
+        options: BotOptions,
+        clientOptions?: Discord.ClientOptions
+    ) {
         super(clientOptions);
 
-        if (options) Object.assign(this, options);
+        Object.assign(this, options);
 
         this.Events = new EventCollection<this>(this);
         this.Commands = new CommandCollection<this>(this);
@@ -50,6 +53,10 @@ export class BotClient extends Client {
      * @returns Returns resolved or rejected login promise.
      */
     public async start(): Promise<string> {
-        return await this.login(this.token!);
+        if (!this.token)
+            return Promise.reject(
+                'CLIENT CANNOT BE STARTED WITHOUT BEING GIVEN A TOKEN'
+            );
+        return await this.login(this.token);
     }
 }

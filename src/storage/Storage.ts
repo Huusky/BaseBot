@@ -1,4 +1,4 @@
-import Keyv from "keyv";
+import Keyv from 'keyv';
 
 export class Storage {
     private storageInstance: Keyv;
@@ -26,8 +26,9 @@ export class Storage {
      */
     public async get(key: string): Promise<string | object> {
         let ret: any;
-        await this.storageInstance.get(key)
-            .then( (res) => {ret = res;});
+        await this.storageInstance.get(key).then((res) => {
+            ret = res;
+        });
         return ret;
     }
 
@@ -37,7 +38,11 @@ export class Storage {
      * @param {string | object} value The value to set
      * @param {number} ttl Key expire time (optional)
      */
-    public async set(key: string, value: string | object, ttl: number): Promise<true> {
+    public async set(
+        key: string,
+        value: string | object,
+        ttl: number
+    ): Promise<true> {
         return await this.storageInstance.set(key, value, ttl);
     }
 

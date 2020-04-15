@@ -1,4 +1,4 @@
-import { PermissionResolvable, RoleResolvable} from 'discord.js';
+import { PermissionResolvable, RoleResolvable } from 'discord.js';
 
 export interface CommandInfo {
     cmdName: string;

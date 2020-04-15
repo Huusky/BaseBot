@@ -1,6 +1,6 @@
-import { CommandInfo } from "../types/CommandInfo";
+import { CommandInfo } from '../types/CommandInfo';
 import * as Discord from 'discord.js';
-import { BotClient } from "../client/BotClient";
+import { Client } from '../client/Client';
 
 /**
  * Command class which all commands extend
@@ -28,14 +28,22 @@ export abstract class Command {
      * @param message The message that invoked the command
      * @param args The arguments that were pulled from the invoking message
      */
-    public abstract execute(client: BotClient, message: Discord.Message, args: string[]): Promise<any>;
-    
+    public abstract execute(
+        client: Client,
+        message: Discord.Message,
+        args: string[]
+    ): Promise<any>;
+
     /**
      * Enables the command
      */
-    public enable(): void {this.cmdEnabled = true;}
+    public enable(): void {
+        this.cmdEnabled = true;
+    }
     /**
      * Disabled the command
      */
-    public disable(): void {this.cmdEnabled = false;}
+    public disable(): void {
+        this.cmdEnabled = false;
+    }
 }

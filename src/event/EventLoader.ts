@@ -1,11 +1,11 @@
-import { BotClient } from "../client/BotClient";
-import { sync } from "glob";
-import { resolve } from "path";
-import { Event } from "./Event"
+import { Client } from '../client/Client';
+import { sync } from 'glob';
+import { resolve } from 'path';
+import { Event } from './Event';
 
 export class EventLoader {
-    private readonly client: BotClient;
-    public constructor(client: BotClient) {
+    private readonly client: Client;
+    public constructor(client: Client) {
         this.client = client;
     }
 
@@ -18,16 +18,21 @@ export class EventLoader {
         for (const c of b) {
             //delete the cached event in case we are reloading commands
             delete require.cache[require.resolve(c)];
-            return await import(c.split('.js')[0])
-                .then( (event) => {
-                    let d: Event = new event.default();
+            await import(c.split('.js')[0])
+                .then((event) => {
+                    const d: Event = new event.default();
                     this.client.Events.set(d.name, d);
                     this.client.on(d.name, d.execute.bind(null, this.client));
-                    console.log(`[EVENT LOADER] : LOADED EVENT '${d.name.toUpperCase()}' SUCCESSFULLY`);
+                    console.log(
+                        `[EVENT LOADER] : LOADED EVENT '${d.name.toUpperCase()}' SUCCESSFULLY`
+                    );
                 })
-                .catch( (err) => {
-                    console.log(`[EVENT LOADER] : ERROR LOADING COMMAND FROM ${c.toUpperCase()}`, err);
-                })
+                .catch((err) => {
+                    console.log(
+                        `[EVENT LOADER] : ERROR LOADING COMMAND FROM ${c.toUpperCase()}`,
+                        err
+                    );
+                });
         }
     }
 }

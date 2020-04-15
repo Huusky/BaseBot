@@ -1,4 +1,4 @@
-export { BotClient } from './client/BotClient';
+export { Client } from './client/Client';
 export { BotOptions } from './types/BotOptions';
 
 export { Command } from './command/Command';
