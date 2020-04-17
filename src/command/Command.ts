@@ -10,6 +10,7 @@ export abstract class Command {
     public cmdName!: string;
     public cmdDesc!: string;
     public cmdUsage?: string;
+    public cmdGroup?: string;
     public cmdHasArgs!: boolean;
     public cmdAliases?: string[];
     public cmdHidden?: boolean;
@@ -28,7 +29,7 @@ export abstract class Command {
      * @param message The message that invoked the command
      * @param args The arguments that were pulled from the invoking message
      */
-    public abstract execute(
+    public abstract async execute(
         client: Client,
         message: Discord.Message,
         args: string[]

@@ -89,3 +89,6 @@ typings/
 
 # Build folder
 dist/
+
+#package-lock
+package-lock.json

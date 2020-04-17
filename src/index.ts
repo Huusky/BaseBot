@@ -9,6 +9,4 @@ export { Event } from './event/Event';
 export { EventNames } from './event/Event';
 export { EventCollection } from './event/EventCollection';
 
-export { Storage } from './storage/Storage';
-
 export { GuildSettings } from './types/GuildSettings';

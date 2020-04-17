@@ -4,7 +4,6 @@ import { CommandCollection } from '../command/CommandCollection';
 import { EventCollection } from '../event/EventCollection';
 import { CommandLoader } from '../command/CommandLoader';
 import { EventLoader } from '../event/EventLoader';
-import { Storage } from '../storage/Storage';
 /**
  * The BaseBot Client
  * @param {BotOptions} options Object containing required client properties
@@ -21,12 +20,7 @@ export class Client extends Discord.Client {
     private commandLoader: CommandLoader;
     private eventLoader: EventLoader;
 
-    public storage: Storage;
-
-    public constructor(
-        options: BotOptions,
-        clientOptions?: Discord.ClientOptions
-    ) {
+    public constructor(options: BotOptions, clientOptions?: Discord.ClientOptions) {
         super(clientOptions);
 
         Object.assign(this, options);
@@ -36,15 +30,17 @@ export class Client extends Discord.Client {
 
         this.commandLoader = new CommandLoader(this);
         this.eventLoader = new EventLoader(this);
-
-        this.storage = new Storage(this.storageCString);
     }
 
     /**
      * Loads commands and events
      */
     public async init(): Promise<any> {
+        // Load events from eventsDir
         await this.eventLoader.loadEvents(this.eventsDir);
+        // Load base commands
+        await this.commandLoader.loadCommands('../command/base');
+        // Load commands from commandsDir
         await this.commandLoader.loadCommands(this.commandsDir);
     }
 
@@ -54,9 +50,7 @@ export class Client extends Discord.Client {
      */
     public async start(): Promise<string> {
         if (!this.token)
-            return Promise.reject(
-                'CLIENT CANNOT BE STARTED WITHOUT BEING GIVEN A TOKEN'
-            );
-        return await this.login(this.token);
+            return Promise.reject('CLIENT CANNOT BE STARTED WITHOUT BEING GIVEN A TOKEN');
+        return this.login(this.token);
     }
 }
