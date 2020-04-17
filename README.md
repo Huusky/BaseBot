@@ -4,8 +4,10 @@ BaseBot is a Discord bot framework written in TypeScript that supports commands 
 
 ## Installation
 ---
-Installation is currently manual, NPM package coming soon.
+Installation is currently manual, NPM package coming soon.  
+To build use the following:
 
+`npm run build //prettier + lint + tsc build`
 
 ## Basic Use
 ---
