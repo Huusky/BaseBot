@@ -1,7 +1,6 @@
 import { Client } from '../../client/Client';
 import { Command } from '../Command';
 import { Message } from 'discord.js';
-import { GuildSettings } from '../../types/GuildSettings';
 
 export default class extends Command {
     public constructor() {
@@ -9,7 +8,7 @@ export default class extends Command {
             cmdName: 'ping',
             cmdDesc: 'Get ping to Discord gateway',
             cmdEnabled: true,
-            cmdHasArgs: true,
+            cmdHasArgs: false,
         });
     }
 
